@@ -1,0 +1,12 @@
+{
+  "generator-mocha": {},
+  "generator-backbone": {
+    "appPath": "app",
+    "appName": "Sweather",
+    "coffee": false,
+    "testFramework": "mocha",
+    "templateFramework": "lodash",
+    "compassBootstrap": true,
+    "includeRequireJS": false
+  }
+}
