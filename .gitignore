@@ -48,7 +48,6 @@ bower_components
 # --------------------
 # App Files
 # --------------------
-test/coverage/
 modules/public/
 modules/views/
 /public/build/
