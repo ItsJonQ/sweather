@@ -28,6 +28,15 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    // Browserify
+    browserify: {
+      server: {
+        files: {
+          '<%= config.app %>/scripts/app.js': '<%= config.app %>/scripts/main.js'
+        }
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -36,7 +45,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        tasks: ['jshint', 'browserify'],
         options: {
           livereload: true
         }
@@ -387,6 +396,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'browserify:server',
       'clean:server',
       'wiredep',
       'concurrent:server',
