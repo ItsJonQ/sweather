@@ -163,10 +163,10 @@ var Forecast = (function() { 'use strict';
 
       if(this.model.get('sweater')) {
         this.$graphic.addClass('sweater');
-        this.$title.text('Sweater');
+        this.$title.text('Sweater Weather');
       } else {
         this.$graphic.addClass('shirt');
-        this.$title.text('Shirt');
+        this.$title.text('Shirt Weather');
       }
 
       this.$el.fadeIn('slow');
