@@ -7,16 +7,32 @@ var forecast = new Forecast();
 
 console.log(forecast);
 },{"./models/forecast":2}],2:[function(require,module,exports){
+/*global Backbone */
 var Forecast = (function() { 'use strict';
 
   var Location = require('./location');
 
   return Backbone.Model.extend({
 
+    defaults: {
+      celsius: true
+    },
+
+    url: function() {
+      // DEV
+      return '/data/data-toronto.json';
+    },
+
     initialize: function() {
-      console.log('dsadas');
       var location = new Location();
-      console.log(location);
+      this.fetch();
+    },
+
+    toCelcius: function(number) {
+      if(!number || typeof number !== 'number') {
+        return false;
+      }
+      return Math.round( (number - 32) * 5 / 9 );
     }
 
   });
@@ -25,6 +41,7 @@ var Forecast = (function() { 'use strict';
 
 module.exports = Forecast;
 },{"./location":3}],3:[function(require,module,exports){
+/*global Backbone */
 var Location = (function() { 'use strict';
 
   return Backbone.Model.extend({

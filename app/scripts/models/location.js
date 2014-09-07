@@ -1,3 +1,4 @@
+/*global Backbone */
 var Location = (function() { 'use strict';
 
   return Backbone.Model.extend({

@@ -45,7 +45,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint', 'browserify'],
+        tasks: ['browserify', 'jshint'],
         options: {
           livereload: true
         }
@@ -142,7 +142,8 @@ module.exports = function (grunt) {
       },
       globals: {
         jQuery: true,
-        Backbone: true
+        Backbone: true,
+        _: true
       },
       all: [
         'Gruntfile.js',
