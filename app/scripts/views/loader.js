@@ -3,7 +3,7 @@ var loader = (function() { 'use strict';
 
   return Backbone.View.extend({
 
-    el: '#application',
+    el: '#loading',
 
     template: _.template($('#template-loader').html()),
 
@@ -14,6 +14,10 @@ var loader = (function() { 'use strict';
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    renderCompleted: function() {
+      this.$el.fadeOut();
     }
 
   });

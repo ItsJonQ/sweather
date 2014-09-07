@@ -1,7 +1,12 @@
 /*global Backbone, _, jQuery */
 var Application = (function() { 'use strict';
 
-  var Loader = require('./loader');
+  // Requiring modules
+  // Models
+  var Forecast = require('../models/forecast');
+  // Views
+  var ForecastView = require('./forecast');
+  var LoaderView = require('./loader');
 
   return Backbone.View.extend({
 
@@ -12,12 +17,21 @@ var Application = (function() { 'use strict';
     initialize: function() {
       console.log('Sweather initialized.');
       // Enter loading state
-      this.loader = new Loader();
+      this.loader = new LoaderView();
 
+      this.forecast = new Forecast();
+      this.forecastView = new ForecastView({
+        application: this,
+        model: this.forecast
+      });
     },
 
     render: function() {
 
+    },
+
+    renderLoadComplete: function() {
+      this.loader.renderCompleted();
     }
 
   });
