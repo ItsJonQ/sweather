@@ -2,6 +2,6 @@
 
 var Forecast = require('./models/forecast');
 
-console.log('\'Allo \'Allo!');
+var forecast = new Forecast();
 
-console.log(Forecast);
+console.log(forecast);

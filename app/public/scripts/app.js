@@ -3,13 +3,55 @@
 
 var Forecast = require('./models/forecast');
 
-console.log('\'Allo \'Allo!');
+var forecast = new Forecast();
 
-console.log(Forecast);
+console.log(forecast);
 },{"./models/forecast":2}],2:[function(require,module,exports){
-var Forecast = Backbone.Model.extend({
+var Forecast = (function() { 'use strict';
 
-});
+  var Location = require('./location');
+
+  return Backbone.Model.extend({
+
+    initialize: function() {
+      console.log('dsadas');
+      var location = new Location();
+      console.log(location);
+    }
+
+  });
+
+})();
 
 module.exports = Forecast;
+},{"./location":3}],3:[function(require,module,exports){
+var Location = (function() { 'use strict';
+
+  return Backbone.Model.extend({
+
+    defaults: {
+      'latitude': null,
+      'longitude': null
+    },
+
+    initialize: function() {
+      var self = this;
+
+      if ('geolocation' in navigator) {
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+          self.set('latitude', position.coords.latitude);
+          self.set('longitude', position.coords.longitude);
+        });
+
+      } else {
+        return false;
+      }
+
+    }
+  });
+
+})();
+
+module.exports = Location;
 },{}]},{},[1]);
