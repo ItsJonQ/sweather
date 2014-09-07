@@ -1,74 +1,59 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var Forecast = require('./models/forecast');
+var Application = require('./views/application');
 
-var forecast = new Forecast();
+new Application();
+},{"./views/application":2}],2:[function(require,module,exports){
+/*global Backbone, _, jQuery */
+var Application = (function() { 'use strict';
 
-console.log(forecast);
-},{"./models/forecast":2}],2:[function(require,module,exports){
-/*global Backbone */
-var Forecast = (function() { 'use strict';
+  var Loader = require('./loader');
 
-  var Location = require('./location');
+  return Backbone.View.extend({
 
-  return Backbone.Model.extend({
+    el: '#application',
 
-    defaults: {
-      celsius: true
-    },
-
-    url: function() {
-      // DEV
-      return '/data/data-toronto.json';
-    },
+    className: 'sweather-application',
 
     initialize: function() {
-      var location = new Location();
-      this.fetch();
+      console.log('Sweather initialized.');
+      // Enter loading state
+      this.loader = new Loader();
+
     },
 
-    toCelcius: function(number) {
-      if(!number || typeof number !== 'number') {
-        return false;
-      }
-      return Math.round( (number - 32) * 5 / 9 );
+    render: function() {
+
     }
 
   });
 
 })();
 
-module.exports = Forecast;
-},{"./location":3}],3:[function(require,module,exports){
-/*global Backbone */
-var Location = (function() { 'use strict';
+module.exports = Application;
+},{"./loader":3}],3:[function(require,module,exports){
+/*global Backbone, _, jQuery */
+var loader = (function() { 'use strict';
 
-  return Backbone.Model.extend({
+  return Backbone.View.extend({
 
-    defaults: {
-      'latitude': null,
-      'longitude': null
-    },
+    el: '#application',
+
+    template: _.template($('#template-loader').html()),
 
     initialize: function() {
-      var self = this;
+      this.render();
+    },
 
-      if ('geolocation' in navigator) {
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-          self.set('latitude', position.coords.latitude);
-          self.set('longitude', position.coords.longitude);
-        });
-
-      } else {
-        return false;
-      }
-
+    render: function() {
+      this.$el.html(this.template());
+      return this;
     }
+
   });
 
 })();
 
-module.exports = Location;
+module.exports = loader;
 },{}]},{},[1]);

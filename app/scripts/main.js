@@ -1,7 +1,5 @@
 'use strict';
 
-var Forecast = require('./models/forecast');
+var Application = require('./views/application');
 
-var forecast = new Forecast();
-
-console.log(forecast);
+new Application();
