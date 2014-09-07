@@ -32,7 +32,7 @@ module.exports = function (grunt) {
     browserify: {
       server: {
         files: {
-          '<%= config.app %>/scripts/app.js': '<%= config.app %>/scripts/main.js'
+          '<%= config.app %>/public/scripts/app.js': ['<%= config.app %>/scripts/main.js']
         }
       }
     },
@@ -139,6 +139,10 @@ module.exports = function (grunt) {
       options: {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
+      },
+      globals: {
+        jQuery: true,
+        Backbone: true
       },
       all: [
         'Gruntfile.js',
