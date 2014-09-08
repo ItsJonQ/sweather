@@ -45,7 +45,7 @@ body {
   @extend %full-width;
   background-color: transparent;
   color: #fff;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.64em;
 
   -webkit-font-smoothing: antialiased;
@@ -67,7 +67,7 @@ html.coolish {
 }
 
 h1.logo {
-  font-size: 16px;
+  font-size: 21px;
   font-weight: normal;
   opacity: 0.4;
   margin: 0 auto $gutter-half ;
@@ -119,19 +119,32 @@ h1.logo {
 }
 
 #apparel-graphic {
-  width: 140px;
-  height: 140px;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  margin: 0 auto $gutter;
+  margin-bottom: $gutter-half;
 
-  &.shirt {
-    background-image: url('../images/shirt.svg');
+  img {
+    @include transition(all 0.2s ease);
+    max-height: 180px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+#footer {
+  margin: $gutter auto;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.64em;
+
+  a {
+    color: white;
+    text-decoration: underline;
   }
 
-  &.sweater {
-    background-image: url('../images/sweater.svg');
+  hr {
+    width: 16px;
+    margin: $gutter-half auto;
+    opacity: 0.4;
   }
 }
 
@@ -140,12 +153,30 @@ h1.logo {
 }
 
 @media (min-width: 768px) {
+  body {
+    font-size: 18px;
+    line-height: 1.64em;
+  }
+
   h1.logo {
     font-size: 28px;
   }
 
   #apparel-graphic {
-    width: 320px;
-    height: 320px;
+    img {
+      max-height: 380px;
+    }
+  }
+}
+
+@media (max-height: 440px) and (max-width: 768px) {
+  #apparel {
+    @include align-items(inherit);
+  }
+}
+
+@media (max-height: 600px) and (min-width: 768px) {
+  #apparel {
+    @include align-items(inherit);
   }
 }

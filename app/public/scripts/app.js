@@ -178,14 +178,6 @@ var Forecast = (function() { 'use strict';
       self.model.toCelsius();
 
       self.$el.html(self.template(self.model.attributes));
-      self.$graphic = self.$el.find('#apparel-graphic');
-      self.$title = self.$el.find('#apparel-title');
-
-      if(self.model.get('sweater')) {
-        self.$graphic.addClass('sweater');
-      } else {
-        self.$graphic.addClass('shirt');
-      }
 
       self.$el.fadeIn('slow', function() {
 
