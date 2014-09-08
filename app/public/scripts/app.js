@@ -37,6 +37,9 @@ var Forecast = (function() { 'use strict';
     calcSweaterWeather: function() {
       if(this.get('currently').temperature < 50 ) {
         this.set('sweater', true);
+        this.set('apparel', 'sweater');
+      } else {
+        this.set('apparel', 'shirt');
       }
       return this.get('sweater');
     },
@@ -52,8 +55,9 @@ var Forecast = (function() { 'use strict';
       var self = this;
       if(self.get('celsius')) {
         var currently = self.get('currently');
-        self.get('currently').apparentTemperature = self.toCelsius(currently.apparentTemperature);
-        self.get('currently').temperature = self.toCelsius(currently.temperature);
+        // self.get('currently').apparentTemperatureCelsius = self.toCelsius(currently.apparentTemperature);
+        // self.get('currently').temperatureCelsius = self.toCelsius(currently.temperature);
+        self.set('temperatureCelsius', self.calcCelsius(currently.temperature));
       }
       return self;
     }
@@ -129,6 +133,10 @@ var Application = (function() { 'use strict';
 
     renderLoadComplete: function() {
       this.loader.renderCompleted();
+    },
+
+    renderWarmish: function() {
+      $('html').addClass('warmish');
     }
 
   });
@@ -154,22 +162,25 @@ var Forecast = (function() { 'use strict';
     },
 
     render: function() {
-      this.application.renderLoadComplete();
+      var self = this;
+      self.application.renderLoadComplete();
+      self.$el.hide();
 
-      this.$el.hide();
-      this.$el.html(this.template());
-      this.$graphic = this.$el.find('#apparel-graphic');
-      this.$title = this.$el.find('#apparel-title');
+      self.model.toCelsius();
 
-      if(this.model.get('sweater')) {
-        this.$graphic.addClass('sweater');
-        this.$title.text('Sweater Weather');
+      self.$el.html(self.template(self.model.attributes));
+      self.$graphic = self.$el.find('#apparel-graphic');
+      self.$title = self.$el.find('#apparel-title');
+
+      if(self.model.get('sweater')) {
+        self.$graphic.addClass('sweater');
       } else {
-        this.$graphic.addClass('shirt');
-        this.$title.text('Shirt Weather');
+        self.$graphic.addClass('shirt');
       }
 
-      this.$el.fadeIn('slow');
+      self.$el.fadeIn('slow', function() {
+        self.application.renderWarmish();
+      });
 
       return this;
     }

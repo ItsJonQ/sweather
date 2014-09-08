@@ -30,6 +30,9 @@ var Forecast = (function() { 'use strict';
     calcSweaterWeather: function() {
       if(this.get('currently').temperature < 50 ) {
         this.set('sweater', true);
+        this.set('apparel', 'sweater');
+      } else {
+        this.set('apparel', 'shirt');
       }
       return this.get('sweater');
     },
@@ -45,8 +48,9 @@ var Forecast = (function() { 'use strict';
       var self = this;
       if(self.get('celsius')) {
         var currently = self.get('currently');
-        self.get('currently').apparentTemperature = self.toCelsius(currently.apparentTemperature);
-        self.get('currently').temperature = self.toCelsius(currently.temperature);
+        // self.get('currently').apparentTemperatureCelsius = self.toCelsius(currently.apparentTemperature);
+        // self.get('currently').temperatureCelsius = self.toCelsius(currently.temperature);
+        self.set('temperatureCelsius', self.calcCelsius(currently.temperature));
       }
       return self;
     }

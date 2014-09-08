@@ -15,22 +15,25 @@ var Forecast = (function() { 'use strict';
     },
 
     render: function() {
-      this.application.renderLoadComplete();
+      var self = this;
+      self.application.renderLoadComplete();
+      self.$el.hide();
 
-      this.$el.hide();
-      this.$el.html(this.template());
-      this.$graphic = this.$el.find('#apparel-graphic');
-      this.$title = this.$el.find('#apparel-title');
+      self.model.toCelsius();
 
-      if(this.model.get('sweater')) {
-        this.$graphic.addClass('sweater');
-        this.$title.text('Sweater Weather');
+      self.$el.html(self.template(self.model.attributes));
+      self.$graphic = self.$el.find('#apparel-graphic');
+      self.$title = self.$el.find('#apparel-title');
+
+      if(self.model.get('sweater')) {
+        self.$graphic.addClass('sweater');
       } else {
-        this.$graphic.addClass('shirt');
-        this.$title.text('Shirt Weather');
+        self.$graphic.addClass('shirt');
       }
 
-      this.$el.fadeIn('slow');
+      self.$el.fadeIn('slow', function() {
+        self.application.renderWarmish();
+      });
 
       return this;
     }

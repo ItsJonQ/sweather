@@ -32,6 +32,10 @@ var Application = (function() { 'use strict';
 
     renderLoadComplete: function() {
       this.loader.renderCompleted();
+    },
+
+    renderWarmish: function() {
+      $('html').addClass('warmish');
     }
 
   });

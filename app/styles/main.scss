@@ -29,9 +29,13 @@ $gutter-half:     ceil($gutter / 2);
 $gutter-double:   ceil($gutter * 2);
 //
 
-html,
+html {
+  @include transition(background-color 2.4s ease);
+  background-color: #99B6BD;
+}
+
 body {
-  background-color: #59ABE3;
+  background-color: transparent;
   color: #fff;
   font-size: 18px;
   line-height: 1.64em;
@@ -40,10 +44,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html.warmish {
+  background-color: #59ABE3;
+}
+
 h1.logo {
+  font-size: 16px;
   font-weight: normal;
   opacity: 0.4;
-  margin: $gutter-half;
+  margin: $gutter-half auto;
 }
 
 .label-title {
@@ -82,28 +91,49 @@ h1.logo {
 }
 
 #apparel {
-  @extend %position-fullscreen;
-  @extend %center-content;
   text-align: center;
 
   .logo {
-    margin-bottom: $gutter-double;
+    margin: $gutter;
+  }
+}
+
+#apparel-graphic {
+  width: 220px;
+  height: 220px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 auto $gutter;
+
+  &.shirt {
+    background-image: url('../images/shirt.svg');
+  }
+
+  &.sweater {
+    background-image: url('../images/shirt.svg');
+  }
+}
+
+#apparel-title {
+  margin: $gutter-half auto;
+}
+
+@media (min-width: 768px) {
+  h1.logo {
+    font-size: 28px;
+  }
+
+  #apparel {
+    text-align: center;
+
+    .logo {
+      margin: $gutter-double;
+    }
   }
 
   #apparel-graphic {
     width: 360px;
     height: 360px;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    margin: 0 auto;
-
-    &.shirt {
-      background-image: url('../images/shirt.svg');
-    }
-
-    &.sweater {
-      background-image: url('../images/shirt.svg');
-    }
   }
 }
