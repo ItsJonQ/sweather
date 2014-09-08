@@ -37,6 +37,24 @@ module.exports = function (grunt) {
       }
     },
 
+    favicons: {
+      options: {
+        trueColor: true,
+        precomposed: true,
+        appleTouchBackgroundColor: "#e2b2c2",
+        coast: true,
+        windowsTile: true,
+        tileBlackWhite: false,
+        tileColor: "auto",
+        html: '<%= config.dist %>/index.html',
+        HTMLPrefix: "/images/icons/"
+      },
+      icons: {
+        src: '<%= config.app %>/images/icon.png',
+        dest: '<%= config.dist %>/images/icons'
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -231,7 +249,7 @@ module.exports = function (grunt) {
           src: [
             '<%= config.dist %>/scripts/{,*/}*.js',
             '<%= config.dist %>/styles/{,*/}*.css',
-            '<%= config.dist %>/images/{,*/}*.*',
+            // '<%= config.dist %>/images/{,*/}*.*',
             '<%= config.dist %>/styles/fonts/{,*/}*.*',
             '<%= config.dist %>/*.{ico,png}'
           ]
@@ -445,6 +463,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
+    // 'favicons',
     'concat',
     'cssmin',
     'uglify',

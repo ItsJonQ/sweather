@@ -169,7 +169,7 @@ h1.logo {
   }
 }
 
-@media (max-height: 440px) and (max-width: 768px) {
+@media (max-height: 481px) and (max-width: 768px) {
   #apparel {
     @include align-items(inherit);
   }
