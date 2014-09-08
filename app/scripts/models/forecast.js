@@ -13,7 +13,8 @@ var Forecast = (function() { 'use strict';
 
     url: function() {
       // DEV
-      return '/data/data-toronto.json';
+      return 'https://api.forecast.io/forecast/53b77c1d5154d1f5d8c67acee9c1fd36/43.8067171,-79.3005712';
+      // return '/data/data-toronto.json';
     },
 
     initialize: function() {
@@ -21,6 +22,7 @@ var Forecast = (function() { 'use strict';
       var self = this;
 
       self.fetch({
+        dataType: 'jsonp',
         success: function() {
           self.calcSweaterWeather();
         }
@@ -28,7 +30,7 @@ var Forecast = (function() { 'use strict';
     },
 
     calcSweaterWeather: function() {
-      if(this.get('currently').temperature < 50 ) {
+      if(this.get('currently').temperature < 64 ) {
         this.set('sweater', true);
         this.set('apparel', 'sweater');
       } else {

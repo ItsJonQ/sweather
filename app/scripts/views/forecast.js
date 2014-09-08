@@ -32,7 +32,13 @@ var Forecast = (function() { 'use strict';
       }
 
       self.$el.fadeIn('slow', function() {
-        self.application.renderWarmish();
+
+        if(self.model.get('sweater')) {
+          self.application.renderCoolish();
+        } else {
+          self.application.renderWarmish();
+        }
+
       });
 
       return this;

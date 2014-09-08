@@ -20,7 +20,8 @@ var Forecast = (function() { 'use strict';
 
     url: function() {
       // DEV
-      return '/data/data-toronto.json';
+      return 'https://api.forecast.io/forecast/53b77c1d5154d1f5d8c67acee9c1fd36/43.8067171,-79.3005712';
+      // return '/data/data-toronto.json';
     },
 
     initialize: function() {
@@ -28,6 +29,7 @@ var Forecast = (function() { 'use strict';
       var self = this;
 
       self.fetch({
+        dataType: 'jsonp',
         success: function() {
           self.calcSweaterWeather();
         }
@@ -35,7 +37,7 @@ var Forecast = (function() { 'use strict';
     },
 
     calcSweaterWeather: function() {
-      if(this.get('currently').temperature < 50 ) {
+      if(this.get('currently').temperature < 64 ) {
         this.set('sweater', true);
         this.set('apparel', 'sweater');
       } else {
@@ -83,10 +85,13 @@ var Location = (function() { 'use strict';
 
       if ('geolocation' in navigator) {
 
-        navigator.geolocation.getCurrentPosition(function(position) {
-          self.set('latitude', position.coords.latitude);
-          self.set('longitude', position.coords.longitude);
-        });
+        // navigator.geolocation.getCurrentPosition(function(position) {
+        //   self.set('latitude', position.coords.latitude);
+        //   self.set('longitude', position.coords.longitude);
+        // });
+
+        this.set('latitude', true);
+        this.set('longitude', true);
 
       } else {
         return false;
@@ -135,6 +140,10 @@ var Application = (function() { 'use strict';
       this.loader.renderCompleted();
     },
 
+    renderCoolish: function() {
+      $('html').addClass('coolish');
+    },
+
     renderWarmish: function() {
       $('html').addClass('warmish');
     }
@@ -179,7 +188,13 @@ var Forecast = (function() { 'use strict';
       }
 
       self.$el.fadeIn('slow', function() {
-        self.application.renderWarmish();
+
+        if(self.model.get('sweater')) {
+          self.application.renderCoolish();
+        } else {
+          self.application.renderWarmish();
+        }
+
       });
 
       return this;

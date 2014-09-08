@@ -13,10 +13,13 @@ var Location = (function() { 'use strict';
 
       if ('geolocation' in navigator) {
 
-        navigator.geolocation.getCurrentPosition(function(position) {
-          self.set('latitude', position.coords.latitude);
-          self.set('longitude', position.coords.longitude);
-        });
+        // navigator.geolocation.getCurrentPosition(function(position) {
+        //   self.set('latitude', position.coords.latitude);
+        //   self.set('longitude', position.coords.longitude);
+        // });
+
+        this.set('latitude', true);
+        this.set('longitude', true);
 
       } else {
         return false;

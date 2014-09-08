@@ -18,6 +18,12 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   @include align-items(center);
   @include justify-content(center);
 }
+
+%full-width {
+  width: 100%;
+  height: 100%;
+}
+
 //
 
 // VARIABLES
@@ -31,10 +37,12 @@ $gutter-double:   ceil($gutter * 2);
 
 html {
   @include transition(background-color 2.4s ease);
+  @extend %full-width;
   background-color: #99B6BD;
 }
 
 body {
+  @extend %full-width;
   background-color: transparent;
   color: #fff;
   font-size: 18px;
@@ -44,15 +52,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 html.warmish {
-  background-color: #59ABE3;
+  background-color: #CEB87A;
+}
+
+html.coolish {
+  background-color: #ACBF98;
+}
+
+#application {
+  @extend %full-width;
+  padding: $gutter $gutter-half;
 }
 
 h1.logo {
   font-size: 16px;
   font-weight: normal;
   opacity: 0.4;
-  margin: $gutter-half auto;
+  margin: 0 auto $gutter-half ;
 }
 
 .label-title {
@@ -91,16 +109,18 @@ h1.logo {
 }
 
 #apparel {
+  @extend %center-content;
+  @extend %full-width;
   text-align: center;
 
   .logo {
-    margin: $gutter;
+    margin: 0 auto $gutter;
   }
 }
 
 #apparel-graphic {
-  width: 220px;
-  height: 220px;
+  width: 140px;
+  height: 140px;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -111,12 +131,12 @@ h1.logo {
   }
 
   &.sweater {
-    background-image: url('../images/shirt.svg');
+    background-image: url('../images/sweater.svg');
   }
 }
 
 #apparel-title {
-  margin: $gutter-half auto;
+  margin: $keyline auto;
 }
 
 @media (min-width: 768px) {
@@ -124,16 +144,8 @@ h1.logo {
     font-size: 28px;
   }
 
-  #apparel {
-    text-align: center;
-
-    .logo {
-      margin: $gutter-double;
-    }
-  }
-
   #apparel-graphic {
-    width: 360px;
-    height: 360px;
+    width: 320px;
+    height: 320px;
   }
 }

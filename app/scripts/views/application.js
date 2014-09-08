@@ -34,6 +34,10 @@ var Application = (function() { 'use strict';
       this.loader.renderCompleted();
     },
 
+    renderCoolish: function() {
+      $('html').addClass('coolish');
+    },
+
     renderWarmish: function() {
       $('html').addClass('warmish');
     }
