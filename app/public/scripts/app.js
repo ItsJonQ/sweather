@@ -36,8 +36,9 @@ var Forecast = (function() { 'use strict';
       var location = this.get('location');
       // DEV
       // API from OpenWeatherMap :)
-      // return 'http://api.openweathermap.org/data/2.5/weather?lat='+location.get('lat')+'&lon='+location.get('lon')+'&units=metric&APPID=b61a972176062e8cb65572109884d904';
-      return '/data/data-toronto.json';
+      var data = 'http://api.openweathermap.org/data/2.5/weather?lat='+location.get('lat')+'&lon='+location.get('lon')+'&units=metric&APPID=b61a972176062e8cb65572109884d904';
+      // data = '/data/data-toronto.json';
+      return data;
     },
 
     parse: function(response, options) {
@@ -87,29 +88,36 @@ var Location = (function() { 'use strict';
     defaults: {
       'lat': null,
       'lon': null,
+      'locate': true,
       'status': false
     },
 
     initialize: function() {
+    },
+
+    locate: function() {
       var self = this;
 
-      if ('geolocation' in navigator) {
-
+      if (self.get('locate') && 'geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
           self.set('lat', position.coords.latitude);
           self.set('lon', position.coords.longitude);
-
           self.set('status', true);
-
-          return true;
         });
-        // this.set('latitude', true);
-        // this.set('longitude', true);
-
-      } else {
-        return false;
       }
 
+      return true;
+    },
+
+    updated: function() {
+      var self = this;
+      // Not sure why setTimeout is required.. but it's the only way it'll work.
+      // for now..
+      setTimeout(function() {
+        self.set('status', 'ok');
+        self.trigger('status:changed');
+        return self;
+      }, 10);
     }
   });
 
@@ -138,6 +146,8 @@ var Application = (function() { 'use strict';
 
     cached: false,
 
+    location: new Location(),
+
     initialize: function() {
       var self = this;
       console.log('Sweather initialized.');
@@ -154,18 +164,20 @@ var Application = (function() { 'use strict';
           if(data.length) {
             self.cached = true;
             // Using the user's cached location
-            self.location = data.first();
-            self.location.set('status', 'ok');
-            console.log(self.location);
+            var savedModel = data.first();
+            savedModel.set('locate', false);
+            self.location = new Location(savedModel.attributes);
+            self.location.updated();
+            // self.location.locate();
           } else {
-            // Getting the user's location
-            self.location = new Location();
+            self.location.locate();
           }
+          console.log(self.location);
         }
       });
 
       // Once the location is set
-      self.location.on('change:status', function() {
+      self.location.on('change', function() {
         // If the data isn't cached
         if(!self.cached) {
           // Save it to local storage

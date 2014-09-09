@@ -19,6 +19,8 @@ var Application = (function() { 'use strict';
 
     cached: false,
 
+    location: new Location(),
+
     initialize: function() {
       var self = this;
       console.log('Sweather initialized.');
@@ -35,18 +37,20 @@ var Application = (function() { 'use strict';
           if(data.length) {
             self.cached = true;
             // Using the user's cached location
-            self.location = data.first();
-            self.location.set('status', 'ok');
-            console.log(self.location);
+            var savedModel = data.first();
+            savedModel.set('locate', false);
+            self.location = new Location(savedModel.attributes);
+            self.location.updated();
+            // self.location.locate();
           } else {
-            // Getting the user's location
-            self.location = new Location();
+            self.location.locate();
           }
+          console.log(self.location);
         }
       });
 
       // Once the location is set
-      self.location.on('change:status', function() {
+      self.location.on('change', function() {
         // If the data isn't cached
         if(!self.cached) {
           // Save it to local storage

@@ -6,29 +6,36 @@ var Location = (function() { 'use strict';
     defaults: {
       'lat': null,
       'lon': null,
+      'locate': true,
       'status': false
     },
 
     initialize: function() {
+    },
+
+    locate: function() {
       var self = this;
 
-      if ('geolocation' in navigator) {
-
+      if (self.get('locate') && 'geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
           self.set('lat', position.coords.latitude);
           self.set('lon', position.coords.longitude);
-
           self.set('status', true);
-
-          return true;
         });
-        // this.set('latitude', true);
-        // this.set('longitude', true);
-
-      } else {
-        return false;
       }
 
+      return true;
+    },
+
+    updated: function() {
+      var self = this;
+      // Not sure why setTimeout is required.. but it's the only way it'll work.
+      // for now..
+      setTimeout(function() {
+        self.set('status', 'ok');
+        self.trigger('status:changed');
+        return self;
+      }, 10);
     }
   });
 
