@@ -13,8 +13,8 @@ var Forecast = (function() { 'use strict';
       var location = this.get('location');
       // DEV
       // API from OpenWeatherMap :)
-      return 'http://api.openweathermap.org/data/2.5/weather?lat='+location.get('lat')+'&lon='+location.get('lon')+'&units=metric&APPID=b61a972176062e8cb65572109884d904';
-      // return '/data/data-toronto.json';
+      // return 'http://api.openweathermap.org/data/2.5/weather?lat='+location.get('lat')+'&lon='+location.get('lon')+'&units=metric&APPID=b61a972176062e8cb65572109884d904';
+      return '/data/data-toronto.json';
     },
 
     parse: function(response, options) {

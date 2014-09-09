@@ -1,4 +1,4 @@
-/*global Backbone, _, jQuery */
+/*global Backbone, _, jQuery, Store */
 var Application = (function() { 'use strict';
 
   // Requiring modules
@@ -8,6 +8,8 @@ var Application = (function() { 'use strict';
   // Views
   var ForecastView = require('./forecast');
   var LoaderView = require('./loader');
+  // Collections
+  var AppCollection = require('../collections/application');
 
   return Backbone.View.extend({
 
@@ -15,16 +17,41 @@ var Application = (function() { 'use strict';
 
     className: 'sweather-application',
 
+    cached: false,
+
     initialize: function() {
       var self = this;
       console.log('Sweather initialized.');
+
       // Enter loading state
       self.loader = new LoaderView();
 
-      // Getting the user's location (currently disabled)
-      self.location = new Location();
+      self.collection = new AppCollection({
+        model: Location
+      });
+
+      self.collection.fetch({
+        success: function(data) {
+          if(data.length) {
+            self.cached = true;
+            // Using the user's cached location
+            self.location = data.first();
+            self.location.set('status', 'ok');
+            console.log(self.location);
+          } else {
+            // Getting the user's location
+            self.location = new Location();
+          }
+        }
+      });
+
       // Once the location is set
       self.location.on('change:status', function() {
+        // If the data isn't cached
+        if(!self.cached) {
+          // Save it to local storage
+          self.collection.create(self.location);
+        }
         // Create a new Forecast, passing the location
         self.forecast = new Forecast({
           location: self.location

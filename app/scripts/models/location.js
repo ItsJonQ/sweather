@@ -4,8 +4,8 @@ var Location = (function() { 'use strict';
   return Backbone.Model.extend({
 
     defaults: {
-      'latitude': null,
-      'longitude': null,
+      'lat': null,
+      'lon': null,
       'status': false
     },
 
