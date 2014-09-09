@@ -4,6 +4,7 @@ var Application = (function() { 'use strict';
   // Requiring modules
   // Models
   var Forecast = require('../models/forecast');
+  var Location = require('../models/location');
   // Views
   var ForecastView = require('./forecast');
   var LoaderView = require('./loader');
@@ -15,15 +16,26 @@ var Application = (function() { 'use strict';
     className: 'sweather-application',
 
     initialize: function() {
+      var self = this;
       console.log('Sweather initialized.');
       // Enter loading state
-      this.loader = new LoaderView();
+      self.loader = new LoaderView();
 
-      this.forecast = new Forecast();
-      this.forecastView = new ForecastView({
-        application: this,
-        model: this.forecast
+      // Getting the user's location (currently disabled)
+      self.location = new Location();
+      // Once the location is set
+      self.location.on('change:status', function() {
+        // Create a new Forecast, passing the location
+        self.forecast = new Forecast({
+          location: self.location
+        });
+        // Create/render the Forecast view
+        self.forecastView = new ForecastView({
+          application: self,
+          model: self.forecast
+        });
       });
+
     },
 
     render: function() {
