@@ -8,8 +8,6 @@ new Application();
 /*global Backbone */
 var Forecast = (function() { 'use strict';
 
-  var Location = require('./location');
-
   return Backbone.Model.extend({
 
     defaults: {
@@ -19,26 +17,25 @@ var Forecast = (function() { 'use strict';
     },
 
     url: function() {
+      var location = this.get('location');
       // DEV
       // API from OpenWeatherMap :)
-      return 'http://api.openweathermap.org/data/2.5/weather?q=Toronto&units=metric&APPID=b61a972176062e8cb65572109884d904';
+      return 'http://api.openweathermap.org/data/2.5/weather?lat='+location.get('lat')+'&lon='+location.get('lon')+'&units=metric&APPID=b61a972176062e8cb65572109884d904';
       // return '/data/data-toronto.json';
     },
 
     parse: function(response, options) {
       // Adding the rounded temperature to the model data
       response.temperature =  Math.round(response.main.temp);
+
       // Returning the parse data
       return response;
     },
 
     initialize: function() {
       var self = this;
-      // Getting the user's location (currently disabled)
-      var location = new Location();
       // Fetching data from the API
       self.fetch({
-        dataType: 'jsonp',
         success: function() {
           // Calculating the apparel suggestion
           self.calcSweather();
@@ -65,7 +62,7 @@ var Forecast = (function() { 'use strict';
 })();
 
 module.exports = Forecast;
-},{"./location":3}],3:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /*global Backbone */
 var Location = (function() { 'use strict';
 
@@ -73,7 +70,8 @@ var Location = (function() { 'use strict';
 
     defaults: {
       'latitude': null,
-      'longitude': null
+      'longitude': null,
+      'status': false
     },
 
     initialize: function() {
@@ -81,13 +79,16 @@ var Location = (function() { 'use strict';
 
       if ('geolocation' in navigator) {
 
-        // navigator.geolocation.getCurrentPosition(function(position) {
-        //   self.set('latitude', position.coords.latitude);
-        //   self.set('longitude', position.coords.longitude);
-        // });
+        navigator.geolocation.getCurrentPosition(function(position) {
+          self.set('lat', position.coords.latitude);
+          self.set('lon', position.coords.longitude);
 
-        this.set('latitude', true);
-        this.set('longitude', true);
+          self.set('status', true);
+
+          return true;
+        });
+        // this.set('latitude', true);
+        // this.set('longitude', true);
 
       } else {
         return false;
@@ -106,6 +107,7 @@ var Application = (function() { 'use strict';
   // Requiring modules
   // Models
   var Forecast = require('../models/forecast');
+  var Location = require('../models/location');
   // Views
   var ForecastView = require('./forecast');
   var LoaderView = require('./loader');
@@ -117,15 +119,26 @@ var Application = (function() { 'use strict';
     className: 'sweather-application',
 
     initialize: function() {
+      var self = this;
       console.log('Sweather initialized.');
       // Enter loading state
-      this.loader = new LoaderView();
+      self.loader = new LoaderView();
 
-      this.forecast = new Forecast();
-      this.forecastView = new ForecastView({
-        application: this,
-        model: this.forecast
+      // Getting the user's location (currently disabled)
+      self.location = new Location();
+      // Once the location is set
+      self.location.on('change:status', function() {
+        // Create a new Forecast, passing the location
+        self.forecast = new Forecast({
+          location: self.location
+        });
+        // Create/render the Forecast view
+        self.forecastView = new ForecastView({
+          application: self,
+          model: self.forecast
+        });
       });
+
     },
 
     render: function() {
@@ -149,7 +162,7 @@ var Application = (function() { 'use strict';
 })();
 
 module.exports = Application;
-},{"../models/forecast":2,"./forecast":5,"./loader":6}],5:[function(require,module,exports){
+},{"../models/forecast":2,"../models/location":3,"./forecast":5,"./loader":6}],5:[function(require,module,exports){
 /*global Backbone, _, jQuery */
 var Forecast = (function() { 'use strict';
 
