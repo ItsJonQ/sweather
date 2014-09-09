@@ -4,6 +4,11 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bourbon/dist/_bourbon.scss";
 // endbower
 
+// MIXINS
+@mixin disable-select() {
+  @include prefixer( user-select, none, webkit moz ms spec );
+}
+
 // PLACEHOLDERS
 %position-fullscreen {
   position: fixed;
@@ -119,7 +124,19 @@ h1.logo {
 }
 
 #apparel-graphic {
+  @include disable-select;
   margin-bottom: $gutter-half;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+  }
 
   img {
     @include transition(all 0.2s ease);
