@@ -25,7 +25,7 @@ var Forecast = (function() { 'use strict';
       // Fade the template into view
       self.$el.fadeIn('slow', function() {
         // Adjust the background colour after animating the apparel
-        if(self.model.get('sweater')) {
+        if(self.model.get('apparel') === 'sweater') {
           self.application.renderCoolish();
         } else {
           self.application.renderWarmish();
