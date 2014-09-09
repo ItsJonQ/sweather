@@ -6,55 +6,51 @@ var Forecast = (function() { 'use strict';
   return Backbone.Model.extend({
 
     defaults: {
-      celsius: true,
-      sweater: false,
-      currently: false
+      apparel: false,
+      currently: false,
+      temperature: false
     },
 
     url: function() {
       // DEV
-      return 'https://api.forecast.io/forecast/53b77c1d5154d1f5d8c67acee9c1fd36/43.8067171,-79.3005712';
+      // API from OpenWeatherMap :)
+      return 'http://api.openweathermap.org/data/2.5/weather?q=Toronto&units=metric&APPID=b61a972176062e8cb65572109884d904';
       // return '/data/data-toronto.json';
     },
 
-    initialize: function() {
-      var location = new Location();
-      var self = this;
+    parse: function(response, options) {
+      // Adding the rounded temperature to the model data
+      response.temperature =  Math.round(response.main.temp);
+      // Returning the parse data
+      return response;
+    },
 
+    initialize: function() {
+      var self = this;
+      // Getting the user's location (currently disabled)
+      var location = new Location();
+      // Fetching data from the API
       self.fetch({
         dataType: 'jsonp',
         success: function() {
-          self.calcSweaterWeather();
+          // Calculating the apparel suggestion
+          self.calcSweather();
         }
       });
     },
 
-    calcSweaterWeather: function() {
-      if(this.get('currently').temperature < 64 ) {
-        this.set('sweater', true);
+/**
+ * Calculating SWEATHER (More coming soon)
+ * --------------------
+ * Sweater  : 17C or below
+ */
+
+    calcSweather: function() {
+      if(this.get('temperature') <= 17) {
         this.set('apparel', 'sweater');
       } else {
         this.set('apparel', 'shirt');
       }
-      return this.get('sweater');
-    },
-
-    calcCelsius: function(number) {
-      if(!number || typeof number !== 'number') {
-        return false;
-      }
-      return Math.round( (number - 32) * 5 / 9 );
-    },
-
-    toCelsius: function() {
-      var self = this;
-      if(self.get('celsius')) {
-        var currently = self.get('currently');
-        // self.get('currently').apparentTemperatureCelsius = self.toCelsius(currently.apparentTemperature);
-        // self.get('currently').temperatureCelsius = self.toCelsius(currently.temperature);
-        self.set('temperatureCelsius', self.calcCelsius(currently.temperature));
-      }
-      return self;
     }
 
   });
