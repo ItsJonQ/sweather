@@ -19,6 +19,9 @@ var Application = (function() { 'use strict';
 
     cached: false,
 
+    // set to true to use localStorage
+    localData: false,
+
     location: new Location(),
 
     initialize: function() {
@@ -32,22 +35,24 @@ var Application = (function() { 'use strict';
         model: Location
       });
 
-      self.collection.fetch({
-        success: function(data) {
-          if(data.length) {
-            self.cached = true;
-            // Using the user's cached location
-            var savedModel = data.first();
-            savedModel.set('locate', false);
-            self.location = new Location(savedModel.attributes);
-            self.location.updated();
-            // self.location.locate();
-          } else {
-            self.location.locate();
+      if(self.localData) {
+        self.collection.fetch({
+          success: function(data) {
+            if(data.length) {
+              self.cached = true;
+              // Using the user's cached location
+              var savedModel = data.first();
+              savedModel.set('locate', false);
+              self.location = new Location(savedModel.attributes);
+              self.location.updated();
+            } else {
+              self.location.locate();
+            }
           }
-          console.log(self.location);
-        }
-      });
+        });
+      } else {
+        self.location.locate();
+      }
 
       // Once the location is set
       self.location.on('change', function() {
