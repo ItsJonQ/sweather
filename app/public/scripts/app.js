@@ -29,7 +29,8 @@ var Forecast = (function() { 'use strict';
     defaults: {
       apparel: false,
       currently: false,
-      temperature: false
+      temperature: false,
+      image: false
     },
 
     url: function() {
@@ -64,14 +65,24 @@ var Forecast = (function() { 'use strict';
 /**
  * Calculating SWEATHER (More coming soon)
  * --------------------
- * Sweater  : 17C or below
+ * Jacket (Light)   :   11C or below
+ * Sweater          :   17C or below
  */
 
     calcSweather: function() {
-      if(this.get('temperature') <= 17) {
-        this.set('apparel', 'sweater');
-      } else {
+      var temperature = this.get('temperature');
+
+      if(temperature <= 11) {
+        this.set('apparel', 'light jacket');
+        this.set('image', 'jacket-light');
+      }
+      else if(temperature <= 17) {
+        this.set('apparel', 'sweather');
+        this.set('image', 'sweather');
+      }
+      else {
         this.set('apparel', 'shirt');
+        this.set('image', 'shirt');
       }
     }
 
@@ -234,7 +245,7 @@ var Forecast = (function() { 'use strict';
       // Assigning the application.view to this view
       this.application = options.application;
       // Render when model.apparel is set
-      this.model.on('change:apparel', this.render, this);
+      this.model.on('change:image', this.render, this);
     },
 
     render: function() {
@@ -248,10 +259,10 @@ var Forecast = (function() { 'use strict';
       // Fade the template into view
       self.$el.fadeIn('slow', function() {
         // Adjust the background colour after animating the apparel
-        if(self.model.get('apparel') === 'sweater') {
-          self.application.renderCoolish();
-        } else {
+        if(self.model.get('apparel') === 'shirt') {
           self.application.renderWarmish();
+        } else {
+          self.application.renderCoolish();
         }
       });
 

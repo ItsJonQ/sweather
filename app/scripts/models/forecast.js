@@ -6,7 +6,8 @@ var Forecast = (function() { 'use strict';
     defaults: {
       apparel: false,
       currently: false,
-      temperature: false
+      temperature: false,
+      image: false
     },
 
     url: function() {
@@ -41,14 +42,24 @@ var Forecast = (function() { 'use strict';
 /**
  * Calculating SWEATHER (More coming soon)
  * --------------------
- * Sweater  : 17C or below
+ * Jacket (Light)   :   11C or below
+ * Sweater          :   17C or below
  */
 
     calcSweather: function() {
-      if(this.get('temperature') <= 17) {
-        this.set('apparel', 'sweater');
-      } else {
+      var temperature = this.get('temperature');
+
+      if(temperature <= 11) {
+        this.set('apparel', 'light jacket');
+        this.set('image', 'jacket-light');
+      }
+      else if(temperature <= 17) {
+        this.set('apparel', 'sweather');
+        this.set('image', 'sweather');
+      }
+      else {
         this.set('apparel', 'shirt');
+        this.set('image', 'shirt');
       }
     }
 

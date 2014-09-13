@@ -11,7 +11,7 @@ var Forecast = (function() { 'use strict';
       // Assigning the application.view to this view
       this.application = options.application;
       // Render when model.apparel is set
-      this.model.on('change:apparel', this.render, this);
+      this.model.on('change:image', this.render, this);
     },
 
     render: function() {
@@ -25,10 +25,10 @@ var Forecast = (function() { 'use strict';
       // Fade the template into view
       self.$el.fadeIn('slow', function() {
         // Adjust the background colour after animating the apparel
-        if(self.model.get('apparel') === 'sweater') {
-          self.application.renderCoolish();
-        } else {
+        if(self.model.get('apparel') === 'shirt') {
           self.application.renderWarmish();
+        } else {
+          self.application.renderCoolish();
         }
       });
 
