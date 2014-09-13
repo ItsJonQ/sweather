@@ -78,7 +78,7 @@ var Forecast = (function() { 'use strict';
       }
       else if(temperature <= 17) {
         this.set('apparel', 'sweather');
-        this.set('image', 'sweather');
+        this.set('image', 'sweater');
       }
       else {
         this.set('apparel', 'shirt');
