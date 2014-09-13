@@ -184,7 +184,7 @@ var Application = (function() { 'use strict';
       // Once the location is set
       self.location.on('change', function() {
         // If the data isn't cached
-        if(!self.cached) {
+        if(!self.cached && self.localData) {
           // Save it to local storage
           self.collection.create(self.location);
         }
