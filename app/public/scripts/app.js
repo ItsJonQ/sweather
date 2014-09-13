@@ -93,9 +93,6 @@ var Location = (function() { 'use strict';
       'status': false
     },
 
-    initialize: function() {
-    },
-
     locate: function() {
       var self = this;
 
