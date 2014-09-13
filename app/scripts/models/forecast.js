@@ -10,7 +10,7 @@ var Forecast = (function() { 'use strict';
     },
 
     url: function() {
-      console.log('Sweather is hitting up da cloud for weather!');
+      console.log('Sweather is hitting up da clouds for some weather!');
       var location = this.get('location');
       // DEV
       // API from OpenWeatherMap :)
